@@ -15,5 +15,5 @@ It was scaffolded using create-react-app.
 
 1. Clone repository.
 1. Install dependencies using `npm install` or `yarn install`.
-1. Create a `.env` environment variables file to store firebase project information. Match the provided `.env.example` variables.
+1. Create a `.env` environment variables file to store firebase project information. Match the provided `.env.example` variables. Frank has an dotenv file he can share with you if you'd like.
 1. Start the development server with `npm start` or `yarn start`.
