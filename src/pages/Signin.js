@@ -7,30 +7,32 @@ const sendEmailLink = email => {
     url: `${origin}/auth`, // redirect URL (must be whitelisted)
     handleCodeInApp: true, // must be true
   }
-  firebase.auth().sendSignInLinkToEmail(email, actionCodeSettings)
-  .then(function() {
-    // we store the email locally so we don't have to ask again
-    // after they've followed the signin link in their email
-    window.localStorage.setItem('emailForSignIn', email);
-    alert("a signin link was sent to your email", "test")
-  })
-  .catch(function(error) {
-    alert(`Error code: ${error.code}`)
-  });
+  firebase
+    .auth()
+    .sendSignInLinkToEmail(email, actionCodeSettings)
+    .then(function() {
+      // we store the email locally so we don't have to ask again
+      // after they've followed the signin link in their email
+      window.localStorage.setItem('emailForSignIn', email)
+      alert('a signin link was sent to your email', 'test')
+    })
+    .catch(function(error) {
+      alert(`Error code: ${error.code}`)
+    })
 }
 
 class Signin extends React.Component {
   state = {
     form: {
-      email: ''
-    }
+      email: '',
+    },
   }
 
   handleEmailChange = e => {
     this.setState({
       form: {
-        email: e.target.value
-      }
+        email: e.target.value,
+      },
     })
   }
 
@@ -40,21 +42,23 @@ class Signin extends React.Component {
     sendEmailLink(email)
     this.setState({
       form: {
-        email: ''
-      }
+        email: '',
+      },
     })
   }
 
   render() {
     return (
       <form onSubmit={this.handleEmailSubmit}>
-        <label htmlFor="email">Email</label><br />
+        <label htmlFor="email">Email</label>
+        <br />
         <input
           type="email"
           id="email"
           onChange={this.handleEmailChange}
           value={this.state.form.email}
-        /><br />
+        />
+        <br />
         <button type="submit">Send Signin Email</button>
       </form>
     )
