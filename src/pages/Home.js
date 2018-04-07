@@ -3,7 +3,9 @@ import PropTypes from 'prop-types'
 import { db } from '../firebase'
 
 class Home extends React.Component {
-  state = {}
+  state = {
+    userData: undefined,
+  }
   componentDidMount() {
     this.unregisterUserListener = db
       .collection('users')
