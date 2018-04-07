@@ -1,63 +1,39 @@
 import React, { Component } from 'react'
-import { BrowserRouter as Router, Switch, Route, Link } from 'react-router-dom'
-import * as firebase from 'firebase'
+import { BrowserRouter as Router, Switch, Route } from 'react-router-dom'
+import firebase from './firebase'
 
-import Home from './components/pages/Home'
-import Auth from './components/pages/Auth'
-import Signin from './components/pages/Signin'
+import Home from './pages/Home'
+import Auth from './pages/Auth'
+import Signin from './pages/Signin'
+
+import Header from './components/Header'
 
 class App extends Component {
   state = {
-    isLoading: true,
-    isSignedIn: false,
+    isFetchingUser: true,
     user: null,
   }
   componentDidMount() {
-    this.unregisterAuthObserver = firebase.auth().onAuthStateChanged(user => {
-      this.setState({ isLoading: false, isSignedIn: !!user, user })
+    this.unregisterAuthListener = firebase.auth().onAuthStateChanged(user => {
+      this.setState({ isFetchingUser: false, user })
     })
   }
   componentWillUnmount() {
-    this.unregisterAuthObserver()
-  }
-  handleSignOut = () => {
-    firebase
-      .auth()
-      .signOut()
-      .then(function() {
-        // Sign-out successful.
-      })
-      .catch(function(error) {
-        // An error happened.
-      })
+    this.unregisterAuthListener()
   }
   render() {
-    if (this.state.isLoading) return null
+    // don't render anything until we know authentication status
+    if (this.state.isFetchingUser) return null
     return (
       <Router>
         <div>
-          <header
-            style={{ borderBottom: '1px solid black', marginBottom: '1em' }}
-          >
-            <Link to="/">
-              <h1 style={{ display: 'inline-block', verticalAlign: 'middle' }}>
-                Social
-              </h1>
-            </Link>
-            <p>
-              You Are {this.state.isSignedIn ? '' : 'Not'} Signed In
-              &mdash;&nbsp;
-              {this.state.isSignedIn ? (
-                <Link to="" onClick={this.handleSignOut}>
-                  Sign Out
-                </Link>
-              ) : (
-                <Link to="/signin">Sign In</Link>
-              )}
-            </p>
-          </header>
+          <Header user={this.state.user} />
           <Switch>
-            <Route path="/" exact component={Home} />
+            <Route
+              path="/"
+              exact
+              render={p => <Home user={this.state.user} />}
+            />
             <Route path="/auth" exact component={Auth} />
             <Route path="/signin" component={Signin} />
             <Route component={() => <div>404</div>} />

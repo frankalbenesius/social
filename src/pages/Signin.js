@@ -1,5 +1,5 @@
 import React from 'react'
-import * as firebase from 'firebase'
+import firebase from '../firebase'
 
 const sendEmailLink = email => {
   const origin = document.location.origin

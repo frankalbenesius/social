@@ -1,5 +1,5 @@
 import React from 'react'
-import * as firebase from 'firebase'
+import firebase from '../firebase'
 
 class Auth extends React.Component {
   componentDidMount() {
