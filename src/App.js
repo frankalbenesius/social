@@ -38,15 +38,15 @@ class App extends Component {
                 Social
               </h1>
             </Link>
+            <p>
+              You Are {this.state.isSignedIn ? "" : "Not"} Signed In &mdash;&nbsp;
+              {this.state.isSignedIn ? (
+                <Link to="" onClick={this.handleSignOut}>Sign Out</Link>
+              ) : (
+                <Link to="/signin">Sign In</Link>
+              )}
+            </p>
           </header>
-          <p>
-            You Are {this.state.isSignedIn ? "" : "Not"} Signed In &mdash;&nbsp;
-            {this.state.isSignedIn ? (
-              <Link to="" onClick={this.handleSignOut}>Sign Out</Link>
-            ) : (
-              <Link to="/signin">Sign In</Link>
-            )}
-          </p>
           <Switch>
             <Route path="/" exact component={Home}/>
             <Route path="/auth" exact component={Auth}/>
