@@ -2,9 +2,9 @@ import React, { Component } from 'react'
 import { BrowserRouter as Router, Switch, Route, Link } from 'react-router-dom'
 import * as firebase from 'firebase'
 
-import Home from './pages/Home'
-import Auth from './pages/Auth'
-import Signin from './pages/Signin'
+import Home from './components/pages/Home'
+import Auth from './components/pages/Auth'
+import Signin from './components/pages/Signin'
 
 class App extends Component {
   state = {
