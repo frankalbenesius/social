@@ -3,6 +3,7 @@ import { BrowserRouter as Router, Switch, Route } from 'react-router-dom'
 import firebase from './firebase'
 
 import Home from './pages/Home'
+import Profile from './pages/Profile'
 import Auth from './pages/Auth'
 import Signin from './pages/Signin'
 
@@ -32,7 +33,13 @@ class App extends Component {
             <Route
               path="/"
               exact
-              render={p => <Home user={this.state.user} />}
+              render={p => {
+                if (!this.state.user) {
+                  return <Home />
+                } else {
+                  return <Profile user={this.state.user} />
+                }
+              }}
             />
             <Route path="/auth" exact component={Auth} />
             <Route path="/signin" component={Signin} />

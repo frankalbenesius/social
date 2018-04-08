@@ -7,60 +7,78 @@ const sendEmailLink = email => {
     url: `${origin}/auth`, // redirect URL (must be whitelisted)
     handleCodeInApp: true, // must be true
   }
-  firebase
+  return firebase
     .auth()
     .sendSignInLinkToEmail(email, actionCodeSettings)
-    .then(function() {
-      // we store the email locally so we don't have to ask again
-      // after they've followed the signin link in their email
-      window.localStorage.setItem('emailForSignIn', email)
-      alert('a signin link was sent to your email', 'test')
-    })
-    .catch(function(error) {
-      alert(`Error code: ${error.code}`)
-    })
+    .then(() => window.localStorage.setItem('emailForSignIn', email))
 }
 
 class Signin extends React.Component {
   state = {
-    form: {
+    formData: {
       email: '',
     },
+    result: undefined,
   }
 
   handleEmailChange = e => {
     this.setState({
-      form: {
+      formData: {
         email: e.target.value,
       },
     })
   }
 
   handleEmailSubmit = e => {
+    this.setState({ result: undefined })
     e.preventDefault()
-    const email = this.state.form.email
+    const email = this.state.formData.email
     sendEmailLink(email)
-    this.setState({
-      form: {
-        email: '',
-      },
-    })
+      .then(() =>
+        this.setState({
+          result: {
+            message: `A signin link has been sent to ${email}.`,
+            type: 'success',
+          },
+        }),
+      )
+      .catch(err =>
+        this.setState({
+          result: {
+            message: `There was an error. Code: ${err.code}`,
+            type: 'error',
+          },
+        }),
+      )
+      .finally(this.setState({ formData: { email: '' } }))
   }
 
   render() {
     return (
-      <form onSubmit={this.handleEmailSubmit}>
-        <label htmlFor="email">Email</label>
-        <br />
-        <input
-          type="email"
-          id="email"
-          onChange={this.handleEmailChange}
-          value={this.state.form.email}
-        />
-        <br />
-        <button type="submit">Send Signin Email</button>
-      </form>
+      <div>
+        {this.state.result ? (
+          <div
+            style={{
+              marginBottom: '1em',
+              color: this.state.result.type === 'success' ? 'green' : 'red',
+            }}
+          >
+            {this.state.result.message}
+          </div>
+        ) : null}
+        <form onSubmit={this.handleEmailSubmit}>
+          <label htmlFor="email">Email</label>
+          <br />
+          <input
+            type="email"
+            id="email"
+            onChange={this.handleEmailChange}
+            value={this.state.formData.email}
+          />
+          <br />
+          <button type="submit">Send Signin Email</button>
+        </form>
+      </div>
     )
   }
 }
