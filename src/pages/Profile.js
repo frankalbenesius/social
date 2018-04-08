@@ -4,7 +4,7 @@ import { db } from '../firebase'
 
 class Profile extends React.Component {
   state = {
-    isFetchingUserData: true,
+    userData: undefined,
   }
   componentDidMount() {
     this.userDoc = db.collection('users').doc(this.props.user.uid)
@@ -23,6 +23,24 @@ class Profile extends React.Component {
         <p>uid: {uid}</p>
         <p>email: {email}</p>
         <p>userData: {JSON.stringify(this.state.userData)}</p>
+        {/*
+          THE PROFILE PLAN:
+          1: User Information
+             - display name (editable, visible to friends of friends)
+             - avatar (editable, visible to friends of friends)
+             - email (editable, visible to friends)
+          2: Friends List (different for your own profile)
+             - list of friends, searchable by display name (and email if your list?)
+             - add a friend by email (if your list)
+          3: Wall
+             - Place to comment (only for friends profiles)
+             - List of Posts. Posts have:
+               - Display Name
+               - Avatar
+               - Date
+               - Message
+               - Delete button (if this is your wall)
+        */}
       </div>
     )
   }
