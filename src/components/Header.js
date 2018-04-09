@@ -2,6 +2,7 @@ import React from 'react'
 import { Link } from 'react-router-dom'
 import glamorous from 'glamorous'
 
+import AuthProvider from '../containers/AuthProvider'
 import firebase from '../firebase'
 
 const handleSignOut = () => {
@@ -34,13 +35,17 @@ export default ({ user }) => {
         </h2>
       </Left>
       <Right>
-        {!!user ? (
-          <Link to="" onClick={handleSignOut}>
-            Sign Out
-          </Link>
-        ) : (
-          <Link to="/signin">Sign In</Link>
-        )}
+        <AuthProvider
+          render={auth =>
+            !auth ? (
+              <Link to="/signin">Sign In</Link>
+            ) : (
+              <Link to="" onClick={handleSignOut}>
+                Sign Out
+              </Link>
+            )
+          }
+        />
       </Right>
     </Wrapper>
   )

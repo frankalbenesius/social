@@ -33,7 +33,7 @@ const Section = ({ title, children }) => {
   )
 }
 
-class Profile extends React.Component {
+class Home extends React.Component {
   state = {
     nameFormData: { name: '' },
     isFetchingUserData: true,
@@ -106,11 +106,11 @@ class Profile extends React.Component {
   }
 }
 
-Profile.propTypes = {
+Home.propTypes = {
   user: PropTypes.shape({
     uid: PropTypes.string.isRequired,
     email: PropTypes.string.isRequired,
   }),
 }
 
-export default Profile
+export default Home

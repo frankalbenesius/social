@@ -1,11 +1,12 @@
-import React, { Component } from 'react'
+import React from 'react'
 import {
   BrowserRouter as Router,
   Switch,
   Route,
   Redirect,
 } from 'react-router-dom'
-import firebase from './firebase'
+
+import AuthProvider from './containers/AuthProvider'
 
 import Landing from './pages/Landing'
 import Home from './pages/Home'
@@ -16,36 +17,22 @@ import SiteWrapper from './components/SiteWrapper'
 import Header from './components/Header'
 import Main from './components/Main'
 
-class App extends Component {
-  state = {
-    isFetchingUser: true,
-    user: null,
-  }
-  componentDidMount() {
-    this.unregisterAuthListener = firebase.auth().onAuthStateChanged(user => {
-      this.setState({ isFetchingUser: false, user })
-    })
-  }
-  componentWillUnmount() {
-    this.unregisterAuthListener()
-  }
-  render() {
-    // don't render anything until we know authentication status
-    if (this.state.isFetchingUser) return null
-    return (
-      <Router>
-        <SiteWrapper>
-          <Header user={this.state.user} />
-          <Main>
+export default () => (
+  <Router>
+    <SiteWrapper>
+      <Header />
+      <Main>
+        <AuthProvider
+          render={auth => (
             <Switch>
               <Route
                 path="/"
                 exact
                 render={p => {
-                  if (!this.state.user) {
+                  if (!auth) {
                     return <Landing />
                   } else {
-                    return <Home user={this.state.user} />
+                    return <Home user={auth} />
                   }
                 }}
               />
@@ -54,7 +41,7 @@ class App extends Component {
                 path="/signin"
                 exact
                 render={p => {
-                  if (this.state.user) {
+                  if (auth) {
                     return <Redirect to="/" />
                   } else {
                     return <Signin />
@@ -63,11 +50,9 @@ class App extends Component {
               />
               <Route component={() => <div>404</div>} />
             </Switch>
-          </Main>
-        </SiteWrapper>
-      </Router>
-    )
-  }
-}
-
-export default App
+          )}
+        />
+      </Main>
+    </SiteWrapper>
+  </Router>
+)
