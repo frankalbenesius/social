@@ -2,7 +2,7 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import glamorous from 'glamorous'
 
-import { db } from '../firebase'
+import { db } from '../../firebase'
 
 // THE PROFILE PLAN:
 // 1: User Information

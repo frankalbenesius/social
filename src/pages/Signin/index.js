@@ -1,6 +1,6 @@
 import React from 'react'
-import firebase from '../firebase'
 import glamorous from 'glamorous'
+import firebase from '../../firebase'
 
 const P = glamorous.p({ maxWidth: '28em' })
 

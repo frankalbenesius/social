@@ -7,8 +7,8 @@ import {
 } from 'react-router-dom'
 import firebase from './firebase'
 
+import Landing from './pages/Landing'
 import Home from './pages/Home'
-import Profile from './pages/Profile'
 import Auth from './pages/Auth'
 import Signin from './pages/Signin'
 
@@ -43,9 +43,9 @@ class App extends Component {
                 exact
                 render={p => {
                   if (!this.state.user) {
-                    return <Home />
+                    return <Landing />
                   } else {
-                    return <Profile user={this.state.user} />
+                    return <Home user={this.state.user} />
                   }
                 }}
               />
