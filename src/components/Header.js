@@ -1,5 +1,7 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
+import glamorous from 'glamorous'
+
 import firebase from '../firebase'
 
 const handleSignOut = () => {
@@ -14,16 +16,24 @@ const handleSignOut = () => {
     })
 }
 
+const Wrapper = glamorous.header({
+  borderBottom: '1px solid gainsboro',
+  display: 'flex',
+  alignItems: 'center',
+  padding: '0.25em 1em 0',
+})
+const Left = glamorous.div({ flex: '1 0 auto' })
+const Right = glamorous(Left)({ textAlign: 'right' })
+
 export default ({ user }) => {
   return (
-    <header style={{ borderBottom: '1px solid black', marginBottom: '1em' }}>
-      <Link to="/">
-        <h1 style={{ display: 'inline-block', verticalAlign: 'middle' }}>
-          Social
-        </h1>
-      </Link>
-      <p>
-        You Are {!!user ? '' : 'Not'} Signed In &mdash;&nbsp;
+    <Wrapper>
+      <Left>
+        <h2 style={{ lineHeight: 0 }}>
+          <Link to="/">Social</Link>
+        </h2>
+      </Left>
+      <Right>
         {!!user ? (
           <Link to="" onClick={handleSignOut}>
             Sign Out
@@ -31,7 +41,7 @@ export default ({ user }) => {
         ) : (
           <Link to="/signin">Sign In</Link>
         )}
-      </p>
-    </header>
+      </Right>
+    </Wrapper>
   )
 }

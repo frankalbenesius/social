@@ -26,6 +26,8 @@ class Auth extends React.Component {
           // Clear email from storage.
           window.localStorage.removeItem('emailForSignIn')
           history.push('/')
+          // may need to just have a "close this tab" message
+          // with a link back to the home page rather than this flow
         })
         .catch(function(error) {
           // Common errors could be invalid email and invalid or expired OTPs.

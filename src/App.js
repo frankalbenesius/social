@@ -1,5 +1,10 @@
 import React, { Component } from 'react'
-import { BrowserRouter as Router, Switch, Route } from 'react-router-dom'
+import {
+  BrowserRouter as Router,
+  Switch,
+  Route,
+  Redirect,
+} from 'react-router-dom'
 import firebase from './firebase'
 
 import Home from './pages/Home'
@@ -7,7 +12,9 @@ import Profile from './pages/Profile'
 import Auth from './pages/Auth'
 import Signin from './pages/Signin'
 
+import SiteWrapper from './components/SiteWrapper'
 import Header from './components/Header'
+import Main from './components/Main'
 
 class App extends Component {
   state = {
@@ -27,25 +34,37 @@ class App extends Component {
     if (this.state.isFetchingUser) return null
     return (
       <Router>
-        <div>
+        <SiteWrapper>
           <Header user={this.state.user} />
-          <Switch>
-            <Route
-              path="/"
-              exact
-              render={p => {
-                if (!this.state.user) {
-                  return <Home />
-                } else {
-                  return <Profile user={this.state.user} />
-                }
-              }}
-            />
-            <Route path="/auth" exact component={Auth} />
-            <Route path="/signin" component={Signin} />
-            <Route component={() => <div>404</div>} />
-          </Switch>
-        </div>
+          <Main>
+            <Switch>
+              <Route
+                path="/"
+                exact
+                render={p => {
+                  if (!this.state.user) {
+                    return <Home />
+                  } else {
+                    return <Profile user={this.state.user} />
+                  }
+                }}
+              />
+              <Route path="/auth" exact component={Auth} />
+              <Route
+                path="/signin"
+                exact
+                render={p => {
+                  if (this.state.user) {
+                    return <Redirect to="/" />
+                  } else {
+                    return <Signin />
+                  }
+                }}
+              />
+              <Route component={() => <div>404</div>} />
+            </Switch>
+          </Main>
+        </SiteWrapper>
       </Router>
     )
   }

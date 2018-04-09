@@ -1,5 +1,8 @@
 import React from 'react'
 import firebase from '../firebase'
+import glamorous from 'glamorous'
+
+const P = glamorous.p({ maxWidth: '28em' })
 
 const sendEmailLink = email => {
   const origin = document.location.origin
@@ -56,6 +59,13 @@ class Signin extends React.Component {
   render() {
     return (
       <div>
+        <h3>Sign In to Social</h3>
+        <P>Submit your email to send yourself a signin link for Social.</P>
+        <P>
+          If you don't have an account yet, your account will be created when
+          you sign in for the first time. Please be aware that this email will
+          also be visible to your friends on Social.
+        </P>
         {this.state.result ? (
           <div
             style={{
