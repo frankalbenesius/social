@@ -1,11 +1,5 @@
 {
   "name": "social",
   "alias": "social.albenesi.us",
-  "dotenv": true,
-  "scale": {
-    "sfo1": {
-      "min": 2,
-      "max": 10
-    }
-  }
+  "dotenv": true
 }
