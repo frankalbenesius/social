@@ -1,7 +1,7 @@
 import { Component } from 'react'
 import firebase from '../firebase'
 
-class App extends Component {
+class AuthProvider extends Component {
   state = {
     loading: true,
     auth: null,
@@ -20,4 +20,4 @@ class App extends Component {
   }
 }
 
-export default App
+export default AuthProvider

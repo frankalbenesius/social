@@ -26,7 +26,7 @@ const Wrapper = glamorous.header({
 const Left = glamorous.div({ flex: '1 0 auto' })
 const Right = glamorous(Left)({ textAlign: 'right' })
 
-export default ({ user }) => {
+export default () => {
   return (
     <Wrapper>
       <Left>

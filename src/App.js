@@ -32,7 +32,7 @@ export default () => (
                   if (!auth) {
                     return <Landing />
                   } else {
-                    return <Home user={auth} />
+                    return <Home auth={auth} />
                   }
                 }}
               />
