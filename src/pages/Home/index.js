@@ -2,7 +2,7 @@ import React from 'react'
 import PropTypes from 'prop-types'
 
 import UserProvider from '../../containers/UserProvider'
-import Section from './Section'
+import Profile from './Profile'
 import Onboarding from './Onboarding'
 
 const needsOnboarding = user => !user || !user.name
@@ -12,20 +12,9 @@ const Home = ({ auth }) => (
     uid={auth.uid}
     render={user =>
       needsOnboarding(user) ? (
-        <Onboarding auth={this.props.auth} />
+        <Onboarding auth={auth} />
       ) : (
-        <div>
-          <Section title="User">
-            <div>{user.name}</div>
-            <div>{auth.email}</div>
-          </Section>
-          <Section title="Friends">
-            <div>a list of friends will go here</div>
-          </Section>
-          <Section title="Wall">
-            <div>a list of posts will go here</div>
-          </Section>
-        </div>
+        <Profile auth={auth} user={user} />
       )
     }
   />
