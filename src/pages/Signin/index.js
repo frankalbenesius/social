@@ -16,26 +16,34 @@ const sendEmailLink = email => {
     .then(() => window.localStorage.setItem('emailForSignIn', email))
 }
 
+const FeedbackMessage = ({ result }) =>
+  result ? (
+    <div
+      style={{
+        marginBottom: '1em',
+        color: result.type === 'success' ? 'green' : 'red',
+      }}
+    >
+      {result.message}
+    </div>
+  ) : null
+
 class Signin extends React.Component {
   state = {
-    formData: {
-      email: '',
-    },
+    email: '',
     result: undefined,
   }
 
   handleEmailChange = e => {
     this.setState({
-      formData: {
-        email: e.target.value,
-      },
+      email: e.target.value,
     })
   }
 
   handleEmailSubmit = e => {
     this.setState({ result: undefined })
     e.preventDefault()
-    const email = this.state.formData.email
+    const email = this.state.email
     sendEmailLink(email)
       .then(() =>
         this.setState({
@@ -53,7 +61,7 @@ class Signin extends React.Component {
           },
         }),
       )
-      .finally(this.setState({ formData: { email: '' } }))
+      .finally(this.setState({ email: '' }))
   }
 
   render() {
@@ -66,16 +74,7 @@ class Signin extends React.Component {
           you sign in for the first time. Please be aware that this email will
           also be visible to your friends on Social.
         </P>
-        {this.state.result ? (
-          <div
-            style={{
-              marginBottom: '1em',
-              color: this.state.result.type === 'success' ? 'green' : 'red',
-            }}
-          >
-            {this.state.result.message}
-          </div>
-        ) : null}
+        <FeedbackMessage result={this.state.result} />
         <form onSubmit={this.handleEmailSubmit}>
           <label htmlFor="email">Email</label>
           <br />
@@ -83,7 +82,7 @@ class Signin extends React.Component {
             type="email"
             id="email"
             onChange={this.handleEmailChange}
-            value={this.state.formData.email}
+            value={this.state.email}
           />
           <br />
           <button type="submit">Send Signin Email</button>
