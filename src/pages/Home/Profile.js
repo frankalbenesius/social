@@ -6,7 +6,6 @@ const Profile = ({ user, auth }) => (
   <div>
     <Section title="User">
       <div>{user.name}</div>
-      <div>{auth.email}</div>
     </Section>
     <Section title="Friends">
       <div>a list of friends will go here</div>

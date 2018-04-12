@@ -34,12 +34,7 @@ class Signin extends React.Component {
     result: undefined,
   }
 
-  handleEmailChange = e => {
-    this.setState({
-      email: e.target.value,
-    })
-  }
-
+  handleEmailChange = e => this.setState({ email: e.target.value })
   handleEmailSubmit = e => {
     this.setState({ result: undefined })
     e.preventDefault()

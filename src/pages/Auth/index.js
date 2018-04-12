@@ -1,45 +1,73 @@
 import React from 'react'
+import { Link } from 'react-router-dom'
+import glamorous from 'glamorous'
 import firebase from '../../firebase'
 
-class Auth extends React.Component {
-  componentDidMount() {
-    const { history } = this.props
-    // sign in if the current URL is an email link.
-    if (firebase.auth().isSignInWithEmailLink(window.location.href)) {
-      // Additional state parameters can also be passed via URL.
-      // This can be used to continue the user's intended action before triggering
-      // the sign-in operation.
-      // Get the email if available. This should be available if the user completes
-      // the flow on the same device where they started it.
-      var email = window.localStorage.getItem('emailForSignIn')
-      if (!email) {
-        // User opened the link on a different device. To prevent session fixation
-        // attacks, ask the user to provide the associated email again. For example:
-        email = window.prompt('Please provide your email for confirmation')
-      }
+const Centered = glamorous.div({ textAlign: 'center' })
 
-      // The client SDK will parse the code from the link for you.
+class Auth extends React.Component {
+  state = {
+    isValidAuthUrl: firebase.auth().isSignInWithEmailLink(window.location.href),
+    storedEmail: window.localStorage.getItem('emailForSignIn'),
+    email: '',
+  }
+
+  componentDidMount() {
+    if (this.state.isValidAuthUrl && this.state.storedEmail) {
       firebase
         .auth()
-        .signInWithEmailLink(email, window.location.href)
-        .then(function(result) {
-          // Clear email from storage.
-          window.localStorage.removeItem('emailForSignIn')
-          history.push('/')
-          // may need to just have a "close this tab" message
-          // with a link back to the home page rather than this flow
-        })
-        .catch(function(error) {
-          // Common errors could be invalid email and invalid or expired OTPs.
-          console.error(`Error at signInWithEmailLink(). Code: ${error.code}`)
-        })
-    } else {
-      history.push('/')
+        .signInWithEmailLink(this.state.storedEmail, window.location.href)
+        .then(() => window.localStorage.removeItem('emailForSignIn'))
     }
   }
 
+  handleEmailChange = e => this.setState({ email: e.target.value })
+  handleEmailSubmit = e => {
+    e.preventDefault()
+    const email = this.state.email
+    firebase.auth().signInWithEmailLink(email, window.location.href)
+  }
+
   render() {
-    return null
+    if (firebase.auth().currentUser) {
+      return (
+        <Centered>
+          <h3>Email Address Confirmed</h3>
+          <p>
+            You have been correctly authenticated!<br />You may now close this
+            window and resume your previous session.
+          </p>
+        </Centered>
+      )
+    }
+    if (!this.state.isValidAuthUrl) {
+      return (
+        <Centered>
+          <h3>Something Went Wrong</h3>
+          <p>
+            You might try <Link to="signin">signing in</Link> again.
+          </p>
+        </Centered>
+      )
+    }
+    if (!this.storedEmail)
+      return (
+        <form onSubmit={this.handleEmailSubmit}>
+          <label htmlFor="email">
+            Please provide your email for signin confirmation.
+          </label>
+          <br />
+          <input
+            type="email"
+            id="email"
+            onChange={this.handleEmailChange}
+            value={this.state.email}
+          />
+          <br />
+          <button type="submit">Submit</button>
+        </form>
+      )
+    return null // authing automatically
   }
 }
 
