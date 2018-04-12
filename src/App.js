@@ -12,6 +12,7 @@ import Landing from './pages/Landing'
 import Home from './pages/Home'
 import Auth from './pages/Auth'
 import Signin from './pages/Signin'
+import FourZeroFour from './pages/FourZeroFour'
 
 import SiteWrapper from './components/SiteWrapper'
 import Header from './components/Header'
@@ -47,7 +48,7 @@ export default () => (
                   }
                 }}
               />
-              <Route component={() => <div>404</div>} />
+              <Route component={FourZeroFour} />
             </Switch>
           )}
         />
