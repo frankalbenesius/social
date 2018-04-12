@@ -36,10 +36,9 @@ export default () => (
                   }
                 }}
               />
-              <Route path="/auth" exact component={Auth} />
+              <Route path="/auth" component={Auth} />
               <Route
                 path="/signin"
-                exact
                 render={p => {
                   if (auth) {
                     return <Redirect to="/" />

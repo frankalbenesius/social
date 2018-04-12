@@ -13,11 +13,14 @@ class Auth extends React.Component {
   }
 
   componentDidMount() {
-    if (this.state.isValidAuthUrl && this.state.storedEmail) {
-      firebase
-        .auth()
-        .signInWithEmailLink(this.state.storedEmail, window.location.href)
-        .then(() => window.localStorage.removeItem('emailForSignIn'))
+    if (this.state.isValidAuthUrl) {
+      const storedEmail = window.localStorage.getItem('emailForSignIn')
+      if (storedEmail) {
+        firebase
+          .auth()
+          .signInWithEmailLink(storedEmail, window.location.href)
+          .then(() => window.localStorage.removeItem('emailForSignIn'))
+      }
     }
   }
 
@@ -50,7 +53,8 @@ class Auth extends React.Component {
         </Centered>
       )
     }
-    if (!this.storedEmail)
+    const storedEmail = window.localStorage.getItem('emailForSignIn')
+    if (!storedEmail)
       return (
         <form onSubmit={this.handleEmailSubmit}>
           <label htmlFor="email">
