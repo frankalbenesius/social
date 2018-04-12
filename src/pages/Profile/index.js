@@ -5,7 +5,7 @@ import UserProvider from '../../containers/UserProvider'
 import Onboarding from './Onboarding'
 import Section from './Section.js'
 
-const needsOnboarding = user => !user || !user.name // change to first + last
+const needsOnboarding = user => !user || !user.name
 
 const Home = ({ match }) => {
   const auth = firebase.auth().currentUser
@@ -14,19 +14,12 @@ const Home = ({ match }) => {
       uid={match.params.id}
       render={user =>
         needsOnboarding(user) ? (
-          <Onboarding auth={auth} />
+          <Onboarding />
         ) : (
           <div>
-            <Section title="User">
-              <div>{user.name}</div>
-              <div>auth: {!!auth ? 'yeah' : 'nah'}</div>
-            </Section>
-            <Section title="Friends">
-              <div>a list of friends will go here</div>
-            </Section>
-            <Section title="Wall">
-              <div>a list of posts will go here</div>
-            </Section>
+            <Section title="User">{user.name}</Section>
+            <Section title="Friends">a list of friends will go here</Section>
+            <Section title="Wall">a list of posts will go here</Section>
           </div>
         )
       }

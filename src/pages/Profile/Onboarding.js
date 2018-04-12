@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 import Section from './Section.js'
-import { db } from '../../firebase'
+import firebase, { db } from '../../firebase'
 
 class Onboarding extends Component {
   state = {
@@ -13,7 +13,7 @@ class Onboarding extends Component {
     const name = this.state.name
     db
       .collection('users')
-      .doc(this.props.auth.uid)
+      .doc(firebase.auth().currentUser.uid)
       .set({ name })
   }
   render() {
