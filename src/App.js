@@ -9,7 +9,7 @@ import {
 import AuthProvider from './containers/AuthProvider'
 
 import Landing from './pages/Landing'
-import Home from './pages/Home'
+import Profile from './pages/Profile'
 import Auth from './pages/Auth'
 import Signin from './pages/Signin'
 import FourZeroFour from './pages/FourZeroFour'
@@ -33,16 +33,17 @@ export default () => (
                   if (!auth) {
                     return <Landing />
                   } else {
-                    return <Home auth={auth} />
+                    return <Redirect to={`/profile/${auth.uid}`} />
                   }
                 }}
               />
+              <Route path="/profile/:id" component={Profile} />
               <Route path="/auth" component={Auth} />
               <Route
                 path="/signin"
                 render={p => {
                   if (auth) {
-                    return <Redirect to="/" />
+                    return <Redirect to={`/profile/${auth.uid}`} />
                   } else {
                     return <Signin />
                   }
