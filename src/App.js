@@ -22,31 +22,32 @@ export default () => (
       <Main>
         <AuthProvider
           render={auth => (
-            <UserProvider
-              uid={auth ? auth.uid : 'none'}
-              render={user => (
-                <Switch>
-                  {/* try to keep redirect logic inside page components */}
-                  <Route path="/" exact component={Landing} />
-                  <Route path="/auth" component={Auth} />
-                  <Route path="/signin" component={Signin} />
-                  {/* routes below care about user data */}
-                  <Route
-                    path="/profile/:id"
-                    render={({ match }) => (
-                      <Profile id={match.params.id} user={user} />
-                    )}
-                  />
-                  <Route
-                    path="/introduction"
-                    render={({ location }) => (
-                      <Introduction location={location} user={user} />
-                    )}
-                  />
-                  <Route component={FourZeroFour} />
-                </Switch>
-              )}
-            />
+            <Switch>
+              {/* try to keep redirect logic inside page components */}
+              <Route path="/" exact component={Landing} />
+              <Route path="/auth" component={Auth} />
+              <Route path="/signin" component={Signin} />
+              <UserProvider
+                uid={auth ? auth.uid : 'none'}
+                render={user => (
+                  <div>
+                    <Route
+                      path="/profile/:id"
+                      render={({ match }) => (
+                        <Profile id={match.params.id} user={user} />
+                      )}
+                    />
+                    <Route
+                      path="/introduction"
+                      render={({ location }) => (
+                        <Introduction location={location} user={user} />
+                      )}
+                    />
+                  </div>
+                )}
+              />
+              <Route component={FourZeroFour} />
+            </Switch>
           )}
         />
       </Main>
