@@ -1,14 +1,25 @@
 import React from 'react'
 import PropTypes from 'prop-types'
-import Link from 'react-router-dom/Link'
+import { Redirect, Link } from 'react-router-dom'
 import firebase from '../../firebase'
 import UserProvider from '../../containers/UserProvider'
 import FriendsList from './FriendsList.js'
 import Wall from './Wall.js'
 import Section from './Section.js'
+import needsIntroduction from '../../lib/needsIntroduction'
 
-const Profile = ({ id }) => {
+const Profile = ({ id, user }) => {
   const auth = firebase.auth().currentUser
+  if (needsIntroduction(user)) {
+    return (
+      <Redirect
+        to={{
+          pathname: '/introduction',
+          search: `?redirectTo=${id}`,
+        }}
+      />
+    )
+  }
   return (
     <UserProvider
       uid={id}

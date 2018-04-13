@@ -1,4 +1,6 @@
 import React from 'react'
+import { Redirect } from 'react-router-dom'
+import queryString from 'query-string'
 import firebase from '../../firebase'
 
 const sendEmailLink = email => {
@@ -32,6 +34,7 @@ class Signin extends React.Component {
   }
 
   handleEmailChange = e => this.setState({ email: e.target.value })
+
   handleEmailSubmit = e => {
     this.setState({ result: undefined })
     e.preventDefault()
@@ -57,6 +60,12 @@ class Signin extends React.Component {
   }
 
   render() {
+    const auth = firebase.auth().currentUser
+    if (auth) {
+      const parsed = queryString.parse(this.props.location.search)
+      const profileId = parsed.redirectTo || auth.uid
+      return <Redirect to={`/profile/${profileId}`} />
+    }
     return (
       <div>
         <h3>Sign In to Social</h3>

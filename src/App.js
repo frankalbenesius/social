@@ -1,11 +1,5 @@
 import React from 'react'
-import {
-  BrowserRouter as Router,
-  Switch,
-  Route,
-  Redirect,
-} from 'react-router-dom'
-import queryString from 'query-string'
+import { BrowserRouter as Router, Switch, Route } from 'react-router-dom'
 
 import AuthProvider from './containers/AuthProvider'
 import UserProvider from './containers/UserProvider'
@@ -21,8 +15,6 @@ import SiteWrapper from './components/SiteWrapper'
 import Header from './components/Header'
 import Main from './components/Main'
 
-const userNeedsIntroduction = user => !user || !user.id || !user.name
-
 export default () => (
   <Router>
     <SiteWrapper>
@@ -34,58 +26,22 @@ export default () => (
               uid={auth ? auth.uid : 'none'}
               render={user => (
                 <Switch>
-                  <Route
-                    path="/"
-                    exact
-                    render={() => {
-                      if (!auth) {
-                        return <Landing />
-                      } else {
-                        return <Redirect to={`/profile/${auth.uid}`} />
-                      }
-                    }}
-                  />
+                  {/* try to keep redirect logic inside page components */}
+                  <Route path="/" exact component={Landing} />
+                  <Route path="/auth" component={Auth} />
+                  <Route path="/signin" component={Signin} />
+                  {/* routes below care about user data */}
                   <Route
                     path="/profile/:id"
-                    render={({ match }) => {
-                      if (auth && userNeedsIntroduction(user)) {
-                        return (
-                          <Redirect
-                            to={{
-                              pathname: '/introduction',
-                              search: `?redirectTo=${match.params.id}`,
-                            }}
-                          />
-                        )
-                      } else {
-                        return <Profile id={match.params.id} />
-                      }
-                    }}
+                    render={({ match }) => (
+                      <Profile id={match.params.id} user={user} />
+                    )}
                   />
                   <Route
                     path="/introduction"
-                    render={({ match, location }) => {
-                      if (auth && userNeedsIntroduction(user)) {
-                        return <Introduction />
-                      } else {
-                        const parsed = queryString.parse(location.search)
-                        const profileId = parsed.redirectTo || auth.uid
-                        return <Redirect to={`/profile/${profileId}`} />
-                      }
-                    }}
-                  />
-                  <Route path="/auth" component={Auth} />
-                  <Route
-                    path="/signin"
-                    render={({ location }) => {
-                      if (auth) {
-                        const parsed = queryString.parse(location.search)
-                        const profileId = parsed.redirectTo || auth.uid
-                        return <Redirect to={`/profile/${profileId}`} />
-                      } else {
-                        return <Signin auth={auth} />
-                      }
-                    }}
+                    render={({ location }) => (
+                      <Introduction location={location} user={user} />
+                    )}
                   />
                   <Route component={FourZeroFour} />
                 </Switch>
