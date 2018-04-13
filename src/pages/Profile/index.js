@@ -31,13 +31,18 @@ const Profile = ({ match }) => {
         return (
           <UserProvider
             uid={id}
-            render={profileUser => (
-              <div>
-                <Section title="User">{profileUser.name}</Section>
-                <FriendsList />
-                <Wall />
-              </div>
-            )}
+            render={profileUser => {
+              if (!profileUser) {
+                return <Redirect to={`/profile/${auth.uid}`} />
+              }
+              return (
+                <div>
+                  <Section title="User">{profileUser.name}</Section>
+                  <FriendsList />
+                  <Wall />
+                </div>
+              )
+            }}
           />
         )
       }}
