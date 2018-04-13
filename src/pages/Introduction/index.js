@@ -1,6 +1,4 @@
 import React, { Component } from 'react'
-import PropTypes from 'prop-types'
-import Section from './Section.js'
 import firebase, { db } from '../../firebase'
 
 class Onboarding extends Component {
@@ -9,24 +7,21 @@ class Onboarding extends Component {
   }
   handleNameChange = e => this.setState({ name: e.target.value })
   handleNameSubmit = e => {
+    const id = firebase.auth().currentUser.uid
     e.preventDefault()
     const name = this.state.name
     db
       .collection('users')
-      .doc(firebase.auth().currentUser.uid)
-      .set({ name })
+      .doc(id)
+      .set({ id, name })
   }
   render() {
     return (
-      <Section title="Welcome to Social!">
+      <div>
+        <h3>One Last Thing...</h3>
         <p>
-          There's only <u>one</u> more thing we need from you before you can
-          start getting social with your buds, and that's your <b>name</b>.
-        </p>
-        <p>
-          This value is the primary way for friends-of-friends to recognize you
-          and request to be your friend, so we recommend that you use your real
-          name.
+          We need to know your <b>name</b> so that your friends will know who
+          you are.
         </p>
         <form onSubmit={this.handleNameSubmit}>
           <label htmlFor="name">Name</label>
@@ -38,17 +33,11 @@ class Onboarding extends Component {
             value={this.state.name}
           />
           <br />
-          <button type="submit">Submit Name</button>
+          <button type="submit">Submit</button>
         </form>
-      </Section>
+      </div>
     )
   }
-}
-
-Onboarding.propTypes = {
-  auth: PropTypes.shape({
-    uid: PropTypes.string.isRequired,
-  }),
 }
 
 export default Onboarding

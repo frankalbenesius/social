@@ -7,11 +7,27 @@ class UserProvider extends Component {
     loading: true,
     user: null,
   }
-  componentDidMount() {
+  startListening = () => {
     const userRef = db.collection('users').doc(this.props.uid)
-    this.unregisterUserListener = userRef.onSnapshot(doc =>
-      this.setState({ loading: false, user: doc.data() }),
-    )
+    this.unregisterUserListener = userRef.onSnapshot(doc => {
+      this.setState({ loading: false, user: doc.data() })
+    })
+  }
+  componentDidMount() {
+    this.startListening()
+  }
+  componentDidUpdate(prevProps) {
+    if (this.props.uid) {
+      if (this.props.uid !== prevProps.uid) {
+        this.setState(
+          { loading: true, user: null },
+          this.unregisterUserListener,
+        )
+      }
+      if (this.state.loading) {
+        this.startListening()
+      }
+    }
   }
   componentWillUnmount() {
     this.unregisterUserListener()

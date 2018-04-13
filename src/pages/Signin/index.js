@@ -1,5 +1,4 @@
 import React from 'react'
-import glamorous from 'glamorous'
 import firebase from '../../firebase'
 
 const sendEmailLink = email => {
