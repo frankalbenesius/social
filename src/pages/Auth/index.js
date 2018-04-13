@@ -32,13 +32,22 @@ class Auth extends React.Component {
   }
 
   render() {
-    if (firebase.auth().currentUser) {
+    const currentUser = firebase.auth().currentUser
+    if (currentUser) {
       return (
         <Centered>
           <h3>Email Address Confirmed</h3>
           <p>
-            You have been correctly authenticated!<br />You may now close this
-            window and resume your previous session.
+            You have been correctly authenticated!<br />
+          </p>
+          <p>
+            You probably have Social open already on another tab.<br />
+            You can safely close this one and resume that session.<br />
+          </p>
+          <p>
+            Otherwise,{' '}
+            <Link to={`/profile/${currentUser.uid}`}>click here</Link> to head
+            to your profile.
           </p>
         </Centered>
       )

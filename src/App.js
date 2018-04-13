@@ -5,6 +5,7 @@ import {
   Route,
   Redirect,
 } from 'react-router-dom'
+import queryString from 'query-string'
 
 import AuthProvider from './containers/AuthProvider'
 
@@ -29,7 +30,7 @@ export default () => (
               <Route
                 path="/"
                 exact
-                render={p => {
+                render={() => {
                   if (!auth) {
                     return <Landing />
                   } else {
@@ -41,11 +42,13 @@ export default () => (
               <Route path="/auth" component={Auth} />
               <Route
                 path="/signin"
-                render={p => {
+                render={({ location }) => {
                   if (auth) {
-                    return <Redirect to={`/profile/${auth.uid}`} />
+                    const parsed = queryString.parse(location.search)
+                    const profileId = parsed.redirectTo || auth.uid
+                    return <Redirect to={`/profile/${profileId}`} />
                   } else {
-                    return <Signin />
+                    return <Signin auth={auth} />
                   }
                 }}
               />
