@@ -11,6 +11,9 @@ import needsIntroduction from '../../lib/needsIntroduction'
 const Profile = ({ match }) => {
   const id = match.params.id
   const auth = firebase.auth().currentUser
+  if (!id) {
+    return <Redirect to={`/profile/${auth.uid}`} />
+  }
   if (!auth) {
     return <UnauthedProfile id={id} />
   }

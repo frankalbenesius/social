@@ -24,6 +24,7 @@ export default () => (
               <Route path="/signin" component={Signin} />
               <Route path="/introduction" component={Introduction} />
               <Route path="/profile/:id" component={Profile} />
+              <Route path="/profile/" component={Profile} />
               <Route component={FourZeroFour} />
             </Switch>
           )}
