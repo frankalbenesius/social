@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import { Redirect } from 'react-router-dom'
-import queryString from 'query-string'
+import qs from 'query-string'
 import firebase, { db } from '../../firebase'
 import needsIntroduction from '../../lib/needsIntroduction'
 import UserProvider from '../../containers/UserProvider'
@@ -25,7 +25,7 @@ class Introduction extends Component {
         uid={auth.uid}
         render={currentUser => {
           if (!needsIntroduction(currentUser)) {
-            const parsed = queryString.parse(this.props.location.search)
+            const parsed = qs.parse(this.props.location.search)
             const profileId = parsed.redirectTo || auth.uid
             return <Redirect to={`/profile/${profileId}`} />
           }

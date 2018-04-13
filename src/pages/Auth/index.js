@@ -7,19 +7,26 @@ const Centered = glamorous.div({ textAlign: 'center' })
 
 class Auth extends React.Component {
   state = {
+    completedSignin: false,
     isValidAuthUrl: firebase.auth().isSignInWithEmailLink(window.location.href),
-    storedEmail: window.localStorage.getItem('emailForSignIn'),
     email: '',
+  }
+
+  signin = email => {
+    firebase
+      .auth()
+      .signInWithEmailLink(email, window.location.href)
+      .then(() => {
+        this.setState({ completedSignin: true })
+        window.localStorage.removeItem('emailForSignin')
+      })
   }
 
   componentDidMount() {
     if (this.state.isValidAuthUrl) {
-      const storedEmail = window.localStorage.getItem('emailForSignIn')
+      const storedEmail = window.localStorage.getItem('emailForSignin')
       if (storedEmail) {
-        firebase
-          .auth()
-          .signInWithEmailLink(storedEmail, window.location.href)
-          .then(() => window.localStorage.removeItem('emailForSignIn'))
+        this.signin(storedEmail)
       }
     }
   }
@@ -28,12 +35,11 @@ class Auth extends React.Component {
   handleEmailSubmit = e => {
     e.preventDefault()
     const email = this.state.email
-    firebase.auth().signInWithEmailLink(email, window.location.href)
+    this.signin(email)
   }
 
   render() {
-    const currentUser = firebase.auth().currentUser
-    if (currentUser) {
+    if (this.state.completedSignin) {
       return (
         <Centered>
           <h3>Email Address Confirmed</h3>
@@ -45,9 +51,7 @@ class Auth extends React.Component {
             You can safely close this one and resume that session.<br />
           </p>
           <p>
-            Otherwise,{' '}
-            <Link to={`/profile/${currentUser.uid}`}>click here</Link> to head
-            to your profile.
+            Otherwise, <Link to="/">click here</Link> to head to your profile.
           </p>
         </Centered>
       )
@@ -62,7 +66,7 @@ class Auth extends React.Component {
         </Centered>
       )
     }
-    const storedEmail = window.localStorage.getItem('emailForSignIn')
+    const storedEmail = window.localStorage.getItem('emailForSignin')
     if (!storedEmail)
       return (
         <form onSubmit={this.handleEmailSubmit}>

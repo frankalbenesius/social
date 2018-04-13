@@ -6,7 +6,10 @@ import AuthProvider from '../containers/AuthProvider'
 import firebase from '../firebase'
 
 const handleSignOut = () => {
-  firebase.auth().signOut() // possible .then().catch()
+  firebase
+    .auth()
+    .signOut()
+    .then() // possible .then().catch()
 }
 
 const Wrapper = glamorous.header({
@@ -32,9 +35,9 @@ export default () => {
             !auth ? (
               <Link to="/signin">Sign In</Link>
             ) : (
-              <Link to="/" onClick={handleSignOut}>
+              <a href="" onClick={handleSignOut}>
                 Sign Out
-              </Link>
+              </a>
             )
           }
         />
