@@ -3,7 +3,7 @@ import { Redirect } from 'react-router-dom'
 import firebase from '../../firebase'
 import UserProvider from '../../containers/UserProvider'
 import UnauthedProfile from './UnauthedProfile.js'
-import FriendsList from './FriendsList.js'
+import Friends from './Friends.js'
 import Wall from './Wall.js'
 import Section from './Section.js'
 import needsIntroduction from '../../lib/needsIntroduction'
@@ -20,8 +20,8 @@ const Profile = ({ match }) => {
   return (
     <UserProvider
       uid={auth.uid}
-      render={currentUser => {
-        if (needsIntroduction(currentUser)) {
+      render={user => {
+        if (needsIntroduction(user)) {
           return (
             <Redirect
               to={{ pathname: '/introduction', search: `?redirectTo=${id}` }}
@@ -31,14 +31,14 @@ const Profile = ({ match }) => {
         return (
           <UserProvider
             uid={id}
-            render={profileUser => {
-              if (!profileUser) {
+            render={profile => {
+              if (!profile) {
                 return <Redirect to={`/profile/${auth.uid}`} />
               }
               return (
                 <div>
-                  <Section title="User">{profileUser.name}</Section>
-                  <FriendsList />
+                  <Section title="User">{profile.name}</Section>
+                  <Friends user={user} profile={profile} />
                   <Wall />
                 </div>
               )
