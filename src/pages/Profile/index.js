@@ -20,8 +20,8 @@ const Profile = ({ match }) => {
   return (
     <UserProvider
       uid={auth.uid}
-      render={user => {
-        if (needsIntroduction(user)) {
+      render={authedUser => {
+        if (needsIntroduction(authedUser)) {
           return (
             <Redirect
               to={{ pathname: '/introduction', search: `?redirectTo=${id}` }}
@@ -31,14 +31,14 @@ const Profile = ({ match }) => {
         return (
           <UserProvider
             uid={id}
-            render={profile => {
-              if (!profile) {
+            render={user => {
+              if (!user) {
                 return <Redirect to={`/profile/${auth.uid}`} />
               }
               return (
                 <div>
-                  <Section title="User">{profile.name}</Section>
-                  <Friends user={user} profile={profile} />
+                  <Section title="User">{user.name}</Section>
+                  <Friends user={user} />
                   <Wall />
                 </div>
               )
