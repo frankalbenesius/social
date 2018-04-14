@@ -8,7 +8,7 @@ class RequestsProvider extends Component {
   componentDidMount() {
     const friendsRef = db
       .collection('users')
-      .doc(this.props.id)
+      .doc(this.props.uid)
       .collection('friends')
     this.unregisterRequestsListener = friendsRef.onSnapshot(snapshot => {
       const friends = []
