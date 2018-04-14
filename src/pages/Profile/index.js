@@ -3,9 +3,9 @@ import { Redirect } from 'react-router-dom'
 import firebase from '../../firebase'
 import UserProvider from '../../containers/UserProvider'
 import UnauthedProfile from './UnauthedProfile'
-import Friends from './Friends.js'
-import Wall from './Wall.js'
-import Section from './Section.js'
+import Friends from './Friends'
+import Wall from './Wall'
+import Section from './Section'
 import IntroductionGate from './IntroductionGate'
 
 const Profile = ({ match }) => {
