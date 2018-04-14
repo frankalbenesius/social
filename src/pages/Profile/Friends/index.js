@@ -6,6 +6,7 @@ import UserProvider from '../../../containers/UserProvider.js'
 import FriendsProvider from '../../../containers/FriendsProvider.js'
 import FriendRequests from './FriendRequests.js'
 import FriendRequestButton from './FriendRequestButton.js'
+import ProfileLinkButton from './ProfileLinkButton.js'
 import Section from '../Section.js'
 
 const Friends = ({ user }) => {
@@ -21,11 +22,15 @@ const Friends = ({ user }) => {
           if (isOwnProfile) {
             return (
               <div>
+                <div>
+                  <ProfileLinkButton />
+                </div>
                 <FriendRequests />
-                Current Friends: ({myFriends.length})
+                Friends: ({myFriends.length})
                 {myFriends.map(friend => (
                   <UserProvider
                     uid={friend.user}
+                    key={friend.user}
                     render={user => (
                       <div key={user.id}>
                         <Link to={user.id}>{user.name}</Link>

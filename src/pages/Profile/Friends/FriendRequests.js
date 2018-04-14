@@ -8,14 +8,15 @@ const FriendRequests = ({ user }) => {
     <RequestsProvider
       render={requests => (
         <div>
-          Requests: ({requests.length})
+          Received Requests: ({requests.length})
           {requests.map(request => (
             <UserProvider
               uid={request.user}
-              key={request.id}
-              render={user => (
-                <div>
-                  <Link to={`/profile/${user.id}`}>{user.name}</Link>
+              render={requestUser => (
+                <div key={requestUser.id}>
+                  <Link to={`/profile/${requestUser.id}`}>
+                    {requestUser.name}
+                  </Link>
                   <button onClick={request.accept}>Accept</button>
                   <button onClick={request.destroy}>Delete</button>
                 </div>

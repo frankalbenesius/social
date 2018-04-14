@@ -16,7 +16,7 @@ const withHandlers = request => {
 
 class RequestsProvider extends Component {
   state = {
-    requests: [],
+    requests: undefined,
   }
   componentDidMount() {
     const requestsRef = db
@@ -34,6 +34,7 @@ class RequestsProvider extends Component {
     this.unregisterRequestsListener()
   }
   render() {
+    if (this.state.requests === undefined) return null
     return this.props.render(this.state.requests)
   }
 }
