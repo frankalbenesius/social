@@ -15,7 +15,11 @@ class Introduction extends Component {
     db
       .collection('users')
       .doc(id)
-      .set({ id, name })
+      .set({
+        id,
+        name,
+        createdAt: firebase.firestore.FieldValue.serverTimestamp(),
+      })
   }
   render() {
     const auth = firebase.auth().currentUser

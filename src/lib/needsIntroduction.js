@@ -1,1 +1,1 @@
-export default user => !user || !user.id || !user.name
+export default user => !user || !user.id || !user.name || !user.createdAt
