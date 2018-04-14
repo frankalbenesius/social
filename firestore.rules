@@ -1,0 +1,28 @@
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    match /users/{userId} {
+    	allow read: if true // id, name, & avatar are public
+      allow create, update: if request.auth.uid == userId
+                            && request.resource.data.keys().hasAll([ 'id', 'name', 'createdAt' ])
+                            && request.resource.data.size() == 3
+                            && request.resource.data.id is string
+                            && request.resource.data.name is string
+                            && request.resource.data.createdAt is timestamp
+                            
+      match /friends/{friendId} {
+      	allow read: if request.auth.uid == userId
+                    || exists("/databases/$(database)/documents/users/$(friendId)/friends/${request.auth.uid}")
+        allow write: if false
+      }
+
+      match /requests/{requestId} {
+      	allow read: if request.auth.uid == userId
+        allow create, update: if request.auth.uid == request.resource.data.user
+        allow delete: if request.auth.uid == userId
+      }
+
+    }
+
+  }
+}

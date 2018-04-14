@@ -20,3 +20,7 @@
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
+
+# firebase
+functions/node_modules
+functions/firebase-debug.log
