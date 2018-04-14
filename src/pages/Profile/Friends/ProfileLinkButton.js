@@ -18,8 +18,8 @@ class ProfileLinkButton extends Component {
     return (
       <Wrapper>
         <div style={{ marginBottom: '0.5em' }}>
-          To become friends with someone you haven't found <br />in Social yet,
-          simply send them a link to your profile.
+          To become friends with someone you haven't found in Social yet, simply
+          send them a link to your profile.
         </div>
         <CopyToClipboard
           text={`${window.origin}/profile/${firebase.auth().currentUser.uid}`}

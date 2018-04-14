@@ -18,6 +18,7 @@ class Auth extends React.Component {
       .signInWithEmailLink(email, window.location.href)
       .then(() => {
         this.setState({ completedSignin: true })
+
         window.localStorage.removeItem('emailForSignin')
       })
   }
