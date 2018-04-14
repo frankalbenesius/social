@@ -1,5 +1,6 @@
 import React from 'react'
 import PropTypes from 'prop-types'
+import Link from 'react-router-dom/Link'
 import firebase from '../../../firebase.js'
 import UserProvider from '../../../containers/UserProvider.js'
 import FriendsProvider from '../../../containers/FriendsProvider.js'
@@ -24,8 +25,12 @@ const Friends = ({ user }) => {
                 Current Friends: ({myFriends.length})
                 {myFriends.map(friend => (
                   <UserProvider
-                    uid={friend.id}
-                    render={user => <div>{user.name}</div>}
+                    uid={friend.user}
+                    render={user => (
+                      <div key={user.id}>
+                        <Link to={user.id}>{user.name}</Link>
+                      </div>
+                    )}
                   />
                 ))}
               </div>
@@ -34,7 +39,7 @@ const Friends = ({ user }) => {
           // friends provider also let's us know when we're looking at someones
           // profile if it's a friend, so we can look at their friends
           const userIsFriend =
-            myFriends.filter(f => f.id === user.id).length > 0
+            myFriends.filter(f => f.user === user.id).length > 0
           if (userIsFriend) {
             return (
               <FriendsProvider
@@ -44,8 +49,12 @@ const Friends = ({ user }) => {
                     Current Friends: ({friends.length})
                     {friends.map(friend => (
                       <UserProvider
-                        uid={friend.id}
-                        render={user => <div>{user.name}</div>}
+                        uid={friend.user}
+                        render={user => (
+                          <div key={user.id}>
+                            <Link to={user.id}>{user.name}</Link>
+                          </div>
+                        )}
                       />
                     ))}
                   </div>

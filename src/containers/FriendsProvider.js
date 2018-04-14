@@ -3,7 +3,7 @@ import { db } from '../firebase'
 
 class RequestsProvider extends Component {
   state = {
-    friends: [],
+    friends: undefined,
   }
   componentDidMount() {
     const friendsRef = db
@@ -12,7 +12,7 @@ class RequestsProvider extends Component {
       .collection('friends')
     this.unregisterRequestsListener = friendsRef.onSnapshot(snapshot => {
       const friends = []
-      snapshot.forEach(requestDoc => friends.push(requestDoc.data()))
+      snapshot.forEach(friendDoc => friends.push(friendDoc.data()))
       this.setState({ friends })
     })
   }
@@ -20,6 +20,7 @@ class RequestsProvider extends Component {
     this.unregisterRequestsListener()
   }
   render() {
+    if (this.state.friends === undefined) return null
     return this.props.render(this.state.friends)
   }
 }
