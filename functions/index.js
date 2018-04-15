@@ -16,11 +16,11 @@ exports.onRequestUpdate = functions.firestore
     const batch = db.batch()
     batch.set(db.doc(`/users/${userId}/friends/${friendId}`), {
       user: friendId,
-      createdAt: admin.database.ServerValue.TIMESTAMP,
+      createdAt: admin.firestore.FieldValue.serverTimestamp(),
     })
     batch.set(db.doc(`/users/${friendId}/friends/${userId}`), {
       user: userId,
-      createdAt: admin.database.ServerValue.TIMESTAMP,
+      createdAt: admin.firestore.FieldValue.serverTimestamp(),
     })
     batch.delete(change.after.ref)
     return batch.commit()
