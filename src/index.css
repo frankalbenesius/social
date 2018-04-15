@@ -10,3 +10,7 @@ body {
   font-family: sans-serif;
   background: gainsboro;
 }
+
+* {
+  box-sizing: border-box;
+}

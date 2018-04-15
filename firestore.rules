@@ -27,5 +27,12 @@ service cloud.firestore {
 
     }
 
+    match /posts/{postId} {
+      allow read: if request.auth.uid == resource.data.wall
+                  || exists(/databases/$(database)/documents/users/$(resource.data.wall)/friends/$(request.auth.uid));
+      allow create: if request.auth.uid != null
+                    && exists(/databases/$(database)/documents/users/$(request.resource.data.wall)/friends/$(request.auth.uid));
+    }
+
   }
 }

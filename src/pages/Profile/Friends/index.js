@@ -55,6 +55,7 @@ const Friends = ({ user }) => {
                     {friends.map(friend => (
                       <UserProvider
                         uid={friend.user}
+                        key={friend.user}
                         render={user => (
                           <div key={user.id}>
                             <Link to={user.id}>{user.name}</Link>

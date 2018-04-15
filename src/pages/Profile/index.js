@@ -29,7 +29,7 @@ const Profile = ({ match }) => {
             <div>
               <Section title="User">{user.name}</Section>
               <Friends user={user} />
-              <Wall />
+              <Wall user={user} />
             </div>
           )
         }}

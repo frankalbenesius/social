@@ -1,7 +1,7 @@
 import { Component } from 'react'
 import { db } from '../firebase'
 
-class RequestsProvider extends Component {
+class FriendsProvider extends Component {
   state = {
     friends: undefined,
   }
@@ -25,4 +25,4 @@ class RequestsProvider extends Component {
   }
 }
 
-export default RequestsProvider
+export default FriendsProvider
